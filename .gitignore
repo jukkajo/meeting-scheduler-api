@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Temp work
+
+temp/
+tmp/
+
+# Build output
+dist/
+
+# Test reports
+coverage/
+
+# Runtime logs
+*.log
+
+# Local config
+.env
+
+# VS Code local settings
+.vscode/
