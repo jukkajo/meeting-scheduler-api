@@ -16,3 +16,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 2. **Project foundation**
    - Used OpenAI Codex to create and validate the configuration for: npm, TypeScript, and test-runner.
+
+3. **Canonical scheduling model**
+   - Used OpenAI Codex to implement and validate the canonical scheduling model, meeting-rule configuration, and focused model tests.
