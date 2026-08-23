@@ -13,3 +13,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 1. **Architecture review and diagrams**
    - Used OpenAI Codex to generate Mermaid diagram syntax from the given architectural concepts and to pinpoint plausible weaknesses and unaddressed cases within the architectural decisions.
+
+2. **Project foundation**
+   - Used OpenAI Codex to create and validate the configuration for: npm, TypeScript, and test-runner.

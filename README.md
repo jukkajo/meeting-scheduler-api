@@ -25,3 +25,13 @@ Current documentation:
 * [Contribution guidelines](CONTRIBUTING.md) — development workflow and repository stantard conventions.
 * [Architecture decisions](docs/adr/) — major architectural decisions and their reasoning.
 * [Design documentation](docs/design/) — detailed architecture and design documentation.
+
+## Development
+
+Requires Node.js 20.19 or later.
+
+```bash
+npm ci
+npm run typecheck
+npm test
+npm run build
