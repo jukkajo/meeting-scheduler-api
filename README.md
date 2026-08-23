@@ -24,3 +24,4 @@ Current documentation:
 * [Assignment](docs/anonymized-assignment.md) — original requirements and constraints for the project.
 * [Contribution guidelines](CONTRIBUTING.md) — development workflow and repository stantard conventions.
 * [Architecture decisions](docs/adr/) — major architectural decisions and their reasoning.
+* [Design documentation](docs/design/) — detailed architecture and design documentation.

@@ -11,6 +11,5 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 ### OpenAI Codex
 
-1. **Architecture decision review**
-   - Used an codex agent as to review and pinpoint ambiguities and unanswered questions within first effort initial ADR-set.
-   - Findings included boundary-question and API/error-contract questions.
+1. **Architecture review and diagrams**
+   - Used OpenAI Codex to generate Mermaid diagram syntax from the given architectural concepts and to pinpoint plausible weaknesses and unaddressed cases within the architectural decisions.
