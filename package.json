@@ -1,0 +1,20 @@
+{
+  "name": "meeting-scheduler-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "API for finding suitable meeting times and participants",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "if [ -d tests ]; then find tests -type f -name '*.test.ts' -exec node --import tsx --test {} +; else node --import tsx --test; fi",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "tsx": "4.23.12",
+    "typescript": "7.0.2"
+  }
+}
