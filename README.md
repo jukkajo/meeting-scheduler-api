@@ -55,18 +55,47 @@ Validation failures return `400`, a request outside authoritative availability c
 
 ## Prerequisites
 
-For local development and validation:
-
-* Node.js 20.19 or later
-* npm
-
-For container deployment and the demonstration request:
+The Docker workflow is the primary assignment path. It requires:
 
 * Docker with a running Docker daemon
 * Bash
 * curl
 
+Local development and validation additionally require:
+
+* Node.js 20.19 or later
+* npm
+
 No database or other runtime service is required.
+
+## Docker deployment (primary assignment workflow)
+
+Build the image, start the API in a detached local container, and wait until the
+real API accepts a request:
+
+```bash
+./scripts/deploy.sh
+```
+
+Successful deployment publishes the ready API at `http://localhost:8080`. From
+another terminal, run the supplied-data demonstration request:
+
+```bash
+./scripts/call-api.sh
+```
+
+It calls `GET /meeting-slots` with a window covered by the supplied calendar and
+fails unless the response contains at least one suitable interval.
+
+Stop and remove the local deployment with:
+
+```bash
+docker rm --force meeting-scheduler-api-local
+```
+
+The deployment script does not replace an existing container with that name. If
+startup fails after it creates the container, it prints the container logs and
+removes the failed container.
 
 ## Test and build
 
@@ -84,20 +113,6 @@ npm start
 ```
 
 The server loads and validates the supplied reference data before listening on port `8080`.
-
-## Docker deployment
-
-Build the image and start the API in a detached local container:
-
-```bash
-./scripts/deploy.sh
-```
-
-The container publishes the API at `http://localhost:8080`. Stop and remove the local deployment with:
-
-```bash
-docker stop meeting-scheduler-api-local
-```
 
 ## Endpoint usage
 
@@ -129,10 +144,5 @@ The request range is half-open: `start` is inclusive and `end` is exclusive. Res
 
 An empty `slots` array is a successful `200` response. Invalid or missing parameters return `400`; a valid range outside the calendar's authoritative coverage returns `422`; unsupported HTTP methods return `405`; and unexpected request-time failures return a non-leaking `500`. Error responses use the Problem Details shape documented in the [OpenAPI contract](docs/openapi.yaml).
 
-After deployment, run the supplied real-data demonstration request with:
-
-```bash
-./scripts/call-api.sh
-```
-
-The script waits briefly for the container to accept connections and prints a non-empty JSON response for the supplied reference data.
+The demonstration script in the primary Docker workflow sends this request and
+prints the API's non-empty JSON response.

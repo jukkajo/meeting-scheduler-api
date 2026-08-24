@@ -1,6 +1,6 @@
 # AI Usage
 
-AI tools were used as an aid during development. Architectural and implementation decisions were done and accepted by the author.
+AI tools assisted with the work listed below. The author remained responsible for architectural and implementation decisions and for reviewing and accepting the submitted changes.
 
 ## Usage Log
 
@@ -31,3 +31,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 7. **Deployable assignment package**
    - Used OpenAI Codex to implement the multi-stage container definition, local deployment and API demonstration scripts, update deployment documentation, and run available validation.
+
+8. **Deployment refinement**
+   - Used OpenAI Codex to refine deployment readiness and failure handling, verify the supplied-data API demonstration, align the README with runtime behavior, and run validation.
