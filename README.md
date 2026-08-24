@@ -53,17 +53,55 @@ A successful request returns continuous suitable intervals and deterministic par
 
 Validation failures return `400`, a request outside authoritative availability coverage returns `422`, and unexpected request-time failures return a non-leaking `500`. Error responses use `application/problem+json`.
 
-## Local usage
+## Prerequisites
 
-Requires Node.js 20.19 or later.
+For local development and validation:
+
+* Node.js 20.19 or later
+* npm
+
+For container deployment and the demonstration request:
+
+* Docker with a running Docker daemon
+* Bash
+* curl
+
+No database or other runtime service is required.
+
+## Test and build
 
 ```bash
 npm ci
+npm run typecheck
+npm test
 npm run build
+```
+
+The compiled application is written to `dist/`. To run it directly with Node.js:
+
+```bash
 npm start
 ```
 
-The server loads and validates the supplied reference data before listening on port `8080`. From another terminal:
+The server loads and validates the supplied reference data before listening on port `8080`.
+
+## Docker deployment
+
+Build the image and start the API in a detached local container:
+
+```bash
+./scripts/deploy.sh
+```
+
+The container publishes the API at `http://localhost:8080`. Stop and remove the local deployment with:
+
+```bash
+docker stop meeting-scheduler-api-local
+```
+
+## Endpoint usage
+
+From another terminal, send a request using UTC timestamps ending in `Z`:
 
 ```bash
 curl --get http://localhost:8080/meeting-slots \
@@ -72,10 +110,29 @@ curl --get http://localhost:8080/meeting-slots \
   --data-urlencode 'end=2024-01-02T10:00:00Z'
 ```
 
-Run all repository checks with:
+The request range is half-open: `start` is inclusive and `end` is exclusive. Results contain maximal continuous intervals; the API does not assume a meeting duration. A successful response has this shape:
+
+```json
+{
+  "slots": [
+    {
+      "start": "2024-01-02T09:00:00.000Z",
+      "end": "2024-01-02T10:00:00.000Z",
+      "participants": [
+        "abby.bond@example.com",
+        "amelie.bryan@example.com"
+      ]
+    }
+  ]
+}
+```
+
+An empty `slots` array is a successful `200` response. Invalid or missing parameters return `400`; a valid range outside the calendar's authoritative coverage returns `422`; unsupported HTTP methods return `405`; and unexpected request-time failures return a non-leaking `500`. Error responses use the Problem Details shape documented in the [OpenAPI contract](docs/openapi.yaml).
+
+After deployment, run the supplied real-data demonstration request with:
 
 ```bash
-npm run typecheck
-npm test
-npm run build
+./scripts/call-api.sh
 ```
+
+The script waits briefly for the container to accept connections and prints a non-empty JSON response for the supplied reference data.

@@ -28,3 +28,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 6. **HTTP meeting search API**
    - Used OpenAI Codex to implement and validate request validation, HTTP translation, centralized Problem Details responses, server composition, the OpenAPI contract, and focused HTTP boundary tests.
+
+7. **Deployable assignment package**
+   - Used OpenAI Codex to implement the multi-stage container definition, local deployment and API demonstration scripts, update deployment documentation, and run available validation.
