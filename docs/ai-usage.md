@@ -19,3 +19,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 3. **Canonical scheduling model**
    - Used OpenAI Codex to implement and validate the canonical scheduling model, meeting-rule configuration, and focused model tests.
+
+4. **Reference data loading**
+   - Used OpenAI Codex to implement and validate the people-directory parser, limited free/busy calendar parser, startup reference-data loader, and focused integration tests.
