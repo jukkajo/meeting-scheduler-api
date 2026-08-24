@@ -8,6 +8,7 @@
     "node": ">=20.19.0"
   },
   "scripts": {
+    "start": "node dist/src/server.js",
     "typecheck": "tsc --noEmit",
     "test": "if [ -d tests ]; then find tests -type f -name '*.test.ts' -exec node --import tsx --test {} +; else node --import tsx --test; fi",
     "build": "tsc"

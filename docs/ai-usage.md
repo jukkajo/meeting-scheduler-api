@@ -25,3 +25,6 @@ AI tools were used as an aid during development. Architectural and implementatio
 
 5. **Scheduling search**
    - Used OpenAI Codex to implement and validate authoritative availability calculations, deterministic participant selection, suitable-interval construction and merging, and focused scheduling tests.
+
+6. **HTTP meeting search API**
+   - Used OpenAI Codex to implement and validate request validation, HTTP translation, centralized Problem Details responses, server composition, the OpenAPI contract, and focused HTTP boundary tests.

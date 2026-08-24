@@ -1,0 +1,130 @@
+openapi: 3.1.0
+info:
+  title: Meeting Scheduler API
+  version: 0.1.0
+  description: Finds continuous suitable meeting intervals and deterministic participant sets.
+servers:
+  - url: http://localhost:8080
+paths:
+  /meeting-slots:
+    get:
+      operationId: findMeetingSlots
+      summary: Find suitable meeting intervals
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: The meeting rule to apply.
+          schema:
+            $ref: "#/components/schemas/MeetingType"
+        - name: start
+          in: query
+          required: true
+          description: Inclusive search start as an RFC 3339 UTC timestamp ending in `Z`.
+          schema:
+            type: string
+            format: date-time
+            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$'
+        - name: end
+          in: query
+          required: true
+          description: Exclusive search end as an RFC 3339 UTC timestamp ending in `Z`.
+          schema:
+            type: string
+            format: date-time
+            pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$'
+      responses:
+        "200":
+          description: Suitable intervals. The `slots` array is empty when no participant set qualifies.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingSearchResponse"
+        "400":
+          description: The query does not satisfy the request contract.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "405":
+          description: The resource was called with a method other than GET.
+          headers:
+            Allow:
+              schema:
+                type: string
+              description: The supported `GET` method.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "422":
+          description: The search range is not fully covered by authoritative availability data.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: An unexpected request-time failure occurred.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+components:
+  schemas:
+    MeetingType:
+      type: string
+      enum:
+        - job-interview
+        - sales
+    MeetingSearchResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - slots
+      properties:
+        slots:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeetingSlot"
+    MeetingSlot:
+      type: object
+      additionalProperties: false
+      required:
+        - start
+        - end
+        - participants
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Inclusive UTC start of the continuous suitable interval.
+        end:
+          type: string
+          format: date-time
+          description: Exclusive UTC end of the continuous suitable interval.
+        participants:
+          type: array
+          minItems: 2
+          items:
+            type: string
+          description: Deterministically selected canonical participant IDs.
+    ProblemDetails:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - title
+        - status
+        - detail
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        detail:
+          type: string
