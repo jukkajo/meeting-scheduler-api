@@ -23,15 +23,59 @@ Current documentation:
 
 * [Assignment](docs/anonymized-assignment.md) — original requirements and constraints for the project.
 * [Contribution guidelines](CONTRIBUTING.md) — development workflow and repository stantard conventions.
+* [OpenAPI contract](docs/openapi.yaml) — request, success-response, and error schemas.
 * [Architecture decisions](docs/adr/) — major architectural decisions and their reasoning.
 * [Design documentation](docs/design/) — detailed architecture and design documentation.
 
-## Development
+## API
+
+`GET /meeting-slots` accepts three required query parameters:
+
+| Parameter | Contract |
+|---|---|
+| `type` | `job-interview` or `sales` |
+| `start` | Inclusive UTC timestamp ending in `Z` |
+| `end` | Exclusive UTC timestamp ending in `Z`, later than `start` |
+
+A successful request returns continuous suitable intervals and deterministic participant IDs. No matching interval is a successful empty response.
+
+```json
+{
+  "slots": [
+    {
+      "start": "2024-01-02T09:00:00.000Z",
+      "end": "2024-01-02T10:00:00.000Z",
+      "participants": ["abby.bond@example.com", "amelie.bryan@example.com"]
+    }
+  ]
+}
+```
+
+Validation failures return `400`, a request outside authoritative availability coverage returns `422`, and unexpected request-time failures return a non-leaking `500`. Error responses use `application/problem+json`.
+
+## Local usage
 
 Requires Node.js 20.19 or later.
 
 ```bash
 npm ci
+npm run build
+npm start
+```
+
+The server loads and validates the supplied reference data before listening on port `8080`. From another terminal:
+
+```bash
+curl --get http://localhost:8080/meeting-slots \
+  --data-urlencode 'type=job-interview' \
+  --data-urlencode 'start=2024-01-02T09:00:00Z' \
+  --data-urlencode 'end=2024-01-02T10:00:00Z'
+```
+
+Run all repository checks with:
+
+```bash
 npm run typecheck
 npm test
 npm run build
+```
